@@ -529,7 +529,7 @@ public class BlinkIdScanner extends CordovaPlugin {
                 // so there are 7 types of results available.
 
                 JSONArray resultsList = new JSONArray();
-                byte[] signatureImage;
+                byte[] signatureImage = null;
 
                 for (BaseRecognitionResult res : resultArray) {
                     try {
@@ -583,8 +583,10 @@ public class BlinkIdScanner extends CordovaPlugin {
                                 } catch (IOException ignorable) {}
                                 
                                 // sekalian ambil yg signature
-                                String resultSignatureImgBase64 = Base64.encodeToString(signatureImage, Base64.DEFAULT);
-                                root.put(RESULT_SIGNATURE, resultSignatureImgBase64);
+                                if (signatureImage != null) {
+                                    String resultSignatureImgBase64 = Base64.encodeToString(signatureImage, Base64.DEFAULT);
+                                    root.put(RESULT_SIGNATURE, resultSignatureImgBase64);
+                                }
                             }
                             ImageHolder.getInstance().clear();
                         }
