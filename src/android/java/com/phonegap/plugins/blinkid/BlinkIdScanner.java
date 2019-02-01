@@ -532,6 +532,11 @@ public class BlinkIdScanner extends CordovaPlugin {
                 byte[] signatureImage = null;
 
                 for (BaseRecognitionResult res : resultArray) {
+                    
+                    if (res.getSignature() != null){
+                         signatureImage = res.getSignature();
+                    }
+                    
                     try {
                         if (res instanceof Pdf417ScanResult) { // check if scan result is result of Pdf417 recognizer
                             resultsList.put(buildPdf417Result((Pdf417ScanResult) res));
@@ -555,9 +560,7 @@ public class BlinkIdScanner extends CordovaPlugin {
                             resultsList.put(buildDocumentFaceResult((DocumentFaceRecognitionResult) res));
                         }
                         else if (res instanceof IndonesianIDFrontRecognitionResult) {
-                            resultsList.put(buildIndonesiaIdResult((IndonesianIDFrontRecognitionResult) res));
-                            
-                            signatureImage = res.getSignature();
+                            resultsList.put(buildIndonesiaIdResult((IndonesianIDFrontRecognitionResult) res));                                                       
                         }
                     } catch (Exception e) {
                         Log.e(LOG_TAG, "Error parsing " + res.getClass().getName());
