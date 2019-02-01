@@ -103,6 +103,7 @@ public class BlinkIdScanner extends CordovaPlugin {
     private static final String RESULT_LIST = "resultList";
     private static final String RESULT_IMAGE = "resultImage";
     private static final String RESULT_TYPE = "resultType";
+    private static final String RESULT_SIGNATURE = "resultSignature";
     private static final String TYPE = "type";
     private static final String DATA = "data";
     private static final String FIELDS = "fields";
@@ -528,6 +529,7 @@ public class BlinkIdScanner extends CordovaPlugin {
                 // so there are 7 types of results available.
 
                 JSONArray resultsList = new JSONArray();
+                byte[] signatureImage;
 
                 for (BaseRecognitionResult res : resultArray) {
                     try {
@@ -554,6 +556,8 @@ public class BlinkIdScanner extends CordovaPlugin {
                         }
                         else if (res instanceof IndonesianIDFrontRecognitionResult) {
                             resultsList.put(buildIndonesiaIdResult((IndonesianIDFrontRecognitionResult) res));
+                            
+                            signatureImage = res.getSignature();
                         }
                     } catch (Exception e) {
                         Log.e(LOG_TAG, "Error parsing " + res.getClass().getName());
@@ -577,6 +581,10 @@ public class BlinkIdScanner extends CordovaPlugin {
                                 try {
                                     byteArrayOutputStream.close();
                                 } catch (IOException ignorable) {}
+                                
+                                // sekalian ambil yg signature
+                                String resultSignatureImgBase64 = Base64.encodeToString(signatureImage, Base64.DEFAULT);
+                                root.put(RESULT_SIGNATURE, resultSignatureImgBase64);
                             }
                             ImageHolder.getInstance().clear();
                         }
