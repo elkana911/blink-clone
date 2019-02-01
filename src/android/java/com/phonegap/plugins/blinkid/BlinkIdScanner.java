@@ -369,6 +369,13 @@ public class BlinkIdScanner extends CordovaPlugin {
 
     private IndonesianIDFrontRecognizerSettings buildIndonesiaIdSettings() {
         IndonesianIDFrontRecognizerSettings settings = new IndonesianIDFrontRecognizerSettings();
+         if (mImageType == IMAGE_CROPPED) {
+        settings.setDisplayFaceImage(true);
+        settings.setDisplaySignatureImage(true);
+        settings.setDisplayFullDocumentImage(true);
+            //settings.setShowFullDocument(true);
+        }
+        
         return settings;
     }
 
